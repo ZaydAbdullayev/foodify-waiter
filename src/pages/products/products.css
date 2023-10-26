@@ -1,0 +1,55 @@
+:root {
+  --wh: 90px;
+}
+
+.res_products > p,
+.order_list_box > p {
+  inline-size: 100%;
+  font-size: var(--fs2);
+  line-height: 1.8;
+  color: #fff;
+}
+
+.res_category_item {
+  width: calc(100% / 5 - var(--gap3) * 4 / 5);
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs4);
+  color: #222;
+  background: #ccc;
+  font-weight: 600;
+}
+
+.order_list_item {
+  height: 65px;
+}
+
+.order_list_box {
+  padding-bottom: calc(var(--wh) + 10px);
+}
+
+.book_order {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: var(--wh);
+  padding: 0 4%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #222;
+}
+
+.book_order > button {
+  padding: 0 2%;
+  height: 45px;
+  border: none;
+  border-radius: 10px;
+  font-size: var(--fs4);
+  color: #fff;
+  background: #333;
+  border: none;
+}

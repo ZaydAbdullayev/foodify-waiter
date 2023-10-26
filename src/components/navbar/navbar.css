@@ -1,0 +1,18 @@
+.header {
+  max-width: 980px;
+  width: 100%;
+  padding: var(--pd2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+
+.header > p {
+  font-size: var(--fs2);
+}
+
+.menu {
+  font-size: var(--fs2);
+  cursor: pointer;
+}
