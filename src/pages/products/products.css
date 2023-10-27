@@ -1,33 +1,90 @@
 :root {
   --wh: 90px;
+  --iwh: 125px;
 }
 
-.res_products > p,
-.order_list_box > p {
-  inline-size: 100%;
-  font-size: var(--fs2);
+.res_products {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.res_category {
+  position: sticky;
+  top: -1px;
+  width: 100%;
+  height: var(--iwh);
+  display: flex;
+  flex-wrap: wrap;
   line-height: 1.8;
+  border-right: 1px solid #ccc4;
+  background: #333;
+} 
+
+.res_category_box{
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+}
+
+.res_category_box>span{
+  padding: 1% 2%;
+  font-size: var(--fs4);
+  color: #fff;
+  background: #333;
+  letter-spacing: 1px;
+  border-right: 1px solid #ccc;
+}
+
+.res_category_box .active{
+  background: #ccc;
+  color: #333;  
+}
+
+.res_category > p,
+.res_menu > p {
+  padding: 1% 5%;
+  inline-size: 100%;
+  font-size: var(--fs3);
   color: #fff;
 }
 
-.res_category_item {
-  width: calc(100% / 5 - var(--gap3) * 4 / 5);
-  height: 45px;
+.res_menu {
+  width: 100%;
+  min-height: 100vh;
+  padding-bottom: calc(var(--wh) + 10px);
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  background: #222;
+}
+
+.res_menu_box{
+  width: 100%;
+  padding:  1% 5%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap3);
+  padding-bottom: calc(var(--iwh) + 20px);
+}
+
+.res_menu_item {
+  width: calc(100% / 4 - var(--gap3) * 3 / 4);
+  aspect-ratio: 3/1.9;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--fs4);
-  color: #222;
-  background: #ccc;
-  font-weight: 600;
+  font-size: var(--fs3);
+  color: #fff;
+  background: #333;
+  letter-spacing: 1px;
 }
 
 .order_list_item {
-  height: 65px;
-}
-
-.order_list_box {
-  padding-bottom: calc(var(--wh) + 10px);
+  height: var(--iwh);
 }
 
 .book_order {
@@ -40,7 +97,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #222;
+  background: #333;
+  border-top: 1px solid #ccc9;
 }
 
 .book_order > button {
@@ -50,6 +108,6 @@
   border-radius: 10px;
   font-size: var(--fs4);
   color: #fff;
-  background: #333;
+  background: #222;
   border: none;
 }

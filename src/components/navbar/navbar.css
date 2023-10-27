@@ -1,5 +1,9 @@
 .header {
   max-width: 980px;
+  position: sticky !important;
+  top: 0;
+  -webkit-stcky: 0;
+  z-index: 99;
   width: 100%;
   padding: var(--pd2);
   display: flex;

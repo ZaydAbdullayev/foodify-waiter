@@ -1,13 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
-    <title>Foodify waiter</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="description"
+    content="Istalgan turdagi ovqatlarni topish imkoniyati va uygacha yetkazib berish xizmati, lavash, ovqat, zakaz, burger, fodify, food, sushi, shovurma, fast food" />
+  <link rel="shortcut icon" href="./logo.png" type="image/x-icon">
+  <link rel="icon" href="./logo.png" />
+  <link rel="apple-touch-icon" href="./logo.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <title>Foodify</title>
 </head>
+
 <body>
-    <div id="root"></div>
+  <div id="root"></div>
+  <script>
+    const expirationDate = new Date();
+    expirationDate.setTime(expirationDate.getTime() + (1 * 60 * 60 * 1000)); // 1 saat
+    document.cookie = "myCookie=myValue; SameSite=None; Secure; expires=" + expirationDate.toUTCString();
+  </script>
+  <script>
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("./worker.js").then(
+        function (registration) { },
+        function (error) {
+          console.log("Service worker registration failed:");
+        }
+      );
+    } else {
+      console.log("Service workers are not supported.");
+    }
+  </script>
 </body>
+
 </html>
