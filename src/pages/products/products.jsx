@@ -74,7 +74,6 @@ export const ProductsList = () => {
       <div className="book_order">
         <span>
           <LuShoppingBasket />
-          {data.length}
         </span>
         <button>Rasmiylashtirish</button>
       </div>
