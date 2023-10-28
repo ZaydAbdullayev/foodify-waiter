@@ -6,7 +6,7 @@ import { Home } from "./pages/home/home";
 import { Auth } from "./auth/auth";
 import { Login } from "./auth/login";
 import { Layout } from "./layout/layout";
-import { Products, ProductsList } from "./pages/products/products";
+import { Products } from "./pages/products/products";
 
 export const Router = () => {
   return (
@@ -16,7 +16,6 @@ export const Router = () => {
         <Route path="/" element={<Auth />}>
           <Route path="/" element={<Home />} />
           <Route path="category/:type/:number" element={<Products />} />
-          <Route path="order/:number/:category" element={<ProductsList />} />
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Route>

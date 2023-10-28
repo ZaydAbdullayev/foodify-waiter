@@ -3,6 +3,7 @@ import "./login.css";
 import { useNavigate } from "react-router-dom";
 import { ClearForm } from "../service/form.service";
 import { useLoginWaiterMutation } from "../service/user.service";
+import { useCheckDepMutation } from "../service/user.service";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 export const Login = () => {
@@ -74,6 +75,69 @@ export const Login = () => {
           Log In
         </button>
       </form>
+    </div>
+  );
+};
+
+export const CheackDepartment = () => {
+  const [pass, setPass] = useState("");
+  const [err, setErr] = useState(false);
+  const [checkDep] = useCheckDepMutation();
+
+  const loginD = async () => {
+    const user = JSON.parse(localStorage.getItem("user")) || {};
+    try {
+      const { data } = await checkDep(pass);
+
+      const dep = data?.innerData?.user?.user?.department;
+      const mergedUser = {
+        ...user,
+        user: { ...user?.user, ...data?.innerData?.user?.user },
+      };
+      localStorage.setItem("department", JSON.stringify(dep));
+      localStorage.setItem("user", JSON.stringify(mergedUser));
+      window.location.href = "/";
+    } catch (error) {
+      setErr(true);
+      setPass("");
+    }
+  };
+
+  const removeLastDigit = () => {
+    if (pass.length > 0) {
+      setPass(pass.slice(0, -1));
+    }
+  };
+
+  return (
+    <div className="login">
+      <label className="cheack_d">
+        <p>Bo'limingiz parolini kiriting</p>
+        <label>
+          <span
+            style={
+              pass.length <= 6 && !err
+                ? {}
+                : { border: "1px solid tomato", color: "tomato" }
+            }
+          >
+            {pass}
+          </span>
+          <button onClick={() => setPass(`${pass}1`)}>1</button>
+          <button onClick={() => setPass(`${pass}2`)}>2</button>
+          <button onClick={() => setPass(`${pass}3`)}>3</button>
+          <button onClick={() => setPass(`${pass}4`)}>4</button>
+          <button onClick={() => setPass(`${pass}5`)}>5</button>
+          <button onClick={() => setPass(`${pass}6`)}>6</button>
+          <button onClick={() => setPass(`${pass}7`)}>7</button>
+          <button onClick={() => setPass(`${pass}8`)}>8</button>
+          <button onClick={() => setPass(`${pass}9`)}>9</button>
+          <button onClick={() => setPass(`${pass}0`)}>0</button>
+          <button onClick={() => setPass("")}>AC</button>
+          <button onClick={removeLastDigit}>⨉</button>
+        </label>
+        <button onClick={loginD}>Kirish</button>
+      </label>
     </div>
   );
 };

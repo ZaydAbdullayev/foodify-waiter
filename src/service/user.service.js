@@ -30,7 +30,22 @@ export const waiterApi = createApi({
       }),
       invalidatesTags: ["waiter"],
     }),
+
+    //path for logout waiter
+    checkDep: builder.mutation({
+      query: (pin) => ({
+        url: `/check/worker/${pin}`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetWaiterQuery, useLoginWaiterMutation } = waiterApi;
+export const {
+  useGetWaiterQuery,
+  useLoginWaiterMutation,
+  useCheckDepMutation,
+} = waiterApi;
