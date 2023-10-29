@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 export const Auth = () => {
   const auth = useSelector((state) => state.auth);
   const location = useLocation();
+  const check = JSON.parse(localStorage.getItem("check")) || false;
 
   if (auth) {
     return <Outlet />;
@@ -12,7 +13,7 @@ export const Auth = () => {
     return (
       <Navigate
         to={{
-          pathname: "/login",
+          pathname: check ? "/check" : "/login",
           state: { from: location },
         }}
       />

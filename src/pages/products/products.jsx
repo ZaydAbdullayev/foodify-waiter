@@ -2,23 +2,25 @@ import React, { useState, useMemo } from "react";
 import "./products.css";
 import "./cart.css";
 import { useNavigate, useLocation } from "react-router-dom";
-import AnimatedNumber from "react-animated-number";
+import io from "socket.io-client";
 
 import { LuShoppingBasket } from "react-icons/lu";
 
+// const socket = io("https://backup.foodify.uz");
+// const socket = io("http://localhost:80");
+const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+
 export const Products = () => {
   const navigate = useNavigate();
-  const [cart, setCart] = useState([]);
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
   const location =
     useLocation().search.split("=").pop().split("%20").join("") ||
     foodData[0].category;
-  const formatValue = (value) => value.toFixed(0);
 
   const uniqueCategories = [...new Set(foodData.map((food) => food.category))];
-  const cs = useMemo(
-    () => setCart(JSON.parse(localStorage.getItem("cart")) || []),
+  const cart = useMemo(
+    () => JSON.parse(localStorage.getItem("cart")) || [],
     [update]
   );
 
@@ -49,6 +51,12 @@ export const Products = () => {
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
+  };
+
+  const resieveOrderS = async () => {
+    // const paymentData = {};
+    socket.emit("/order", cart);
+    navigate("/");
   };
 
   const filteredData = foodData.filter(
@@ -93,7 +101,7 @@ export const Products = () => {
         <span onClick={() => setOpen(!open)}>
           <LuShoppingBasket /> {cart.length ? <span></span> : <></>}
         </span>
-        <button>Rasmiylashtirish</button>
+        <button onClick={() => resieveOrderS()}>Rasmiylashtirish</button>
       </div>
       <div className={open ? "cart_box open" : "cart_box"}>
         <p>
@@ -104,13 +112,7 @@ export const Products = () => {
             return (
               <div className="cart_body__item">
                 <p>{item.name}</p>
-                <span>
-                  <AnimatedNumber
-                    value={item.price || 2600 * item.qty}
-                    formatValue={formatValue}
-                  />{" "}
-                  so'm
-                </span>
+                <span>{item.price || 5600 * item.qty} so'm</span>
                 <div className="update_item">
                   <button
                     onClick={() =>
