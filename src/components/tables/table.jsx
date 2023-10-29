@@ -47,7 +47,7 @@ export const Table = ({ data }) => {
               : "table served_table"
           }
         >
-          {item.number}
+          {item.name}
         </div>
         <div
           className={

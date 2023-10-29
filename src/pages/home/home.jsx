@@ -1,38 +1,44 @@
 import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Table } from "../../components/tables/table";
+import { useGetLocationQuery } from "../../service/table.service";
+import { useGetTableMutation } from "../../service/table.service";
+import { async } from "q";
 
 export const Home = () => {
+  const { data: category = [] } = useGetLocationQuery();
   const [active, setActive] = useState("");
   const [tablesData, setTablesData] = useState([]);
+  const [getTable] = useGetTableMutation();
+  // isLoading: loading, isError: error, data: tables = []
 
-  const filterData = (type) => {
+  const filterData = async (type) => {
     setActive(type);
-    const value = type ? type : category[0].name;
-    const filteredData = tables.filter((item) => item.type === value);
-    setTablesData(filteredData);
+    const value = type ? type : category[0];
+    const { data = [] } = await getTable(value);
+    setTablesData(data?.data);
   };
 
   useEffect(() => {
-    filterData(category[0].name);
+    filterData(category[0]);
   }, []);
 
   return (
     <div className="box" style={{ background: "#333" }}>
       <div className="home">
         <div className="universal_box home_filter">
-          {category.map((item) => {
+          {category?.data?.map((item) => {
             return (
               <span
                 className={
-                  active === item.name
+                  active === item
                     ? "home_filter__item active"
                     : "home_filter__item"
                 }
-                key={item.id}
-                onClick={() => filterData(item.name)}
+                key={item}
+                onClick={() => filterData(item)}
               >
-                {item.name}
+                {item}
               </span>
             );
           })}
@@ -46,120 +52,120 @@ export const Home = () => {
   );
 };
 
-const tables = [
-  {
-    id: 1,
-    type: "tashqari",
-    number: 1,
-    status: "free",
-  },
-  {
-    id: 2,
-    type: "tashqari",
-    number: 2,
-    status: "busy",
-  },
-  {
-    id: 3,
-    type: "tashqari",
-    number: 3,
-    status: "served",
-  },
-  {
-    id: 4,
-    type: "tashqari",
-    number: 4,
-    status: "free",
-  },
-  {
-    id: 7,
-    type: "ichkari",
-    number: 3,
-    status: "served",
-  },
-  {
-    id: 5,
-    type: "ichkari",
-    number: 1,
-    status: "free",
-  },
-  {
-    id: 6,
-    type: "ichkari",
-    number: 2,
-    status: "busy",
-  },
-  {
-    id: 8,
-    type: "ichkari",
-    number: 4,
-    status: "free",
-  },
-  {
-    id: 9,
-    type: "padval",
-    number: 1,
-    status: "free",
-  },
-  {
-    id: 11,
-    type: "padval",
-    number: 3,
-    status: "served",
-  },
-  {
-    id: 10,
-    type: "padval",
-    number: 2,
-    status: "busy",
-  },
-  {
-    id: 12,
-    type: "padval",
-    number: 4,
-    status: "free",
-  },
-  {
-    id: 13,
-    type: "padval",
-    number: 1,
-    status: "free",
-  },
-  {
-    id: 14,
-    type: "padval",
-    number: 2,
-    status: "busy",
-  },
-  {
-    id: 15,
-    type: "padval",
-    number: 3,
-    status: "served",
-  },
-  {
-    id: 16,
-    type: "padval",
-    number: 4,
-    status: "free",
-  },
-];
+// const tables = [
+//   {
+//     id: 1,
+//     type: "tashqari",
+//     number: 1,
+//     status: "free",
+//   },
+//   {
+//     id: 2,
+//     type: "tashqari",
+//     number: 2,
+//     status: "busy",
+//   },
+//   {
+//     id: 3,
+//     type: "tashqari",
+//     number: 3,
+//     status: "served",
+//   },
+//   {
+//     id: 4,
+//     type: "tashqari",
+//     number: 4,
+//     status: "free",
+//   },
+//   {
+//     id: 7,
+//     type: "ichkari",
+//     number: 3,
+//     status: "served",
+//   },
+//   {
+//     id: 5,
+//     type: "ichkari",
+//     number: 1,
+//     status: "free",
+//   },
+//   {
+//     id: 6,
+//     type: "ichkari",
+//     number: 2,
+//     status: "busy",
+//   },
+//   {
+//     id: 8,
+//     type: "ichkari",
+//     number: 4,
+//     status: "free",
+//   },
+//   {
+//     id: 9,
+//     type: "padval",
+//     number: 1,
+//     status: "free",
+//   },
+//   {
+//     id: 11,
+//     type: "padval",
+//     number: 3,
+//     status: "served",
+//   },
+//   {
+//     id: 10,
+//     type: "padval",
+//     number: 2,
+//     status: "busy",
+//   },
+//   {
+//     id: 12,
+//     type: "padval",
+//     number: 4,
+//     status: "free",
+//   },
+//   {
+//     id: 13,
+//     type: "padval",
+//     number: 1,
+//     status: "free",
+//   },
+//   {
+//     id: 14,
+//     type: "padval",
+//     number: 2,
+//     status: "busy",
+//   },
+//   {
+//     id: 15,
+//     type: "padval",
+//     number: 3,
+//     status: "served",
+//   },
+//   {
+//     id: 16,
+//     type: "padval",
+//     number: 4,
+//     status: "free",
+//   },
+// ];
 
-const category = [
-  {
-    id: 1,
-    name: "tashqari",
-  },
-  {
-    id: 2,
-    name: "ichkari",
-  },
-  {
-    id: 3,
-    name: "2-qavat",
-  },
-  {
-    id: 4,
-    name: "padval",
-  },
-];
+// const category = [
+//   {
+//     id: 1,
+//     name: "tashqari",
+//   },
+//   {
+//     id: 2,
+//     name: "ichkari",
+//   },
+//   {
+//     id: 3,
+//     name: "2-qavat",
+//   },
+//   {
+//     id: 4,
+//     name: "padval",
+//   },
+// ];

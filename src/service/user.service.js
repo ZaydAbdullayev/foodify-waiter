@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 // const base_url = "https://backend.foodify.uz";
 const base_url = "https://lncxlmks-8081.inc1.devtunnels.ms";
 
+
 export const waiterApi = createApi({
   reducerPath: "waiterApi",
   baseQuery: fetchBaseQuery({ baseUrl: base_url }),
@@ -10,10 +11,8 @@ export const waiterApi = createApi({
     getWaiter: builder.query({
       query: () => ({
         url: `/api/waiter`,
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "GET",
+        headers: {},
       }),
       providesTags: ["waiter"],
     }),
@@ -21,7 +20,7 @@ export const waiterApi = createApi({
     //path for login waiter
     loginWaiter: builder.mutation({
       query: (data) => ({
-        url: `/api/waiter/login`,
+        url: `/login/worker`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",

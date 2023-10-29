@@ -1,5 +1,6 @@
 :root {
   --wh: 40px;
+  --ipd: 1.5% 3%;
 }
 
 .cart_box {
@@ -23,8 +24,12 @@
 }
 
 .cart_box > p {
+  inline-size: 100%;
+  text-align: center;
   font-size: var(--fs3);
   color: #fff;
+  line-height: 1.8;
+  border-bottom: 1px solid #ccc7;
 }
 
 .cart_body {
@@ -32,17 +37,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #eee;
   flex: 1;
+}
+
+.cart_body > p {
+  inline-size: 100%;
+  padding: var(--ipd);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--fs3);
 }
 
 .cart_body__item {
   width: 100%;
-  padding: 1.5% 3%;
+  padding: var(--ipd);
   display: flex;
   align-items: center;
   gap: var(--gap1);
   font-size: var(--fs5);
-  color: #eee;
   border-bottom: 1px solid #ccc7cc;
 }
 
@@ -82,6 +96,6 @@
   text-align: center;
 }
 
-.update_item>input::-webkit-inner-spin-button{
+.update_item > input::-webkit-inner-spin-button {
   display: none;
 }

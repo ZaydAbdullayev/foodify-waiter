@@ -2,6 +2,7 @@ import React, { useState, useMemo } from "react";
 import "./products.css";
 import "./cart.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import { CalculateTotalPrice } from "../../service/calc.service";
 import io from "socket.io-client";
 
 import { LuShoppingBasket } from "react-icons/lu";
@@ -11,18 +12,19 @@ import { LuShoppingBasket } from "react-icons/lu";
 const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
 
 export const Products = () => {
+  const user = JSON.parse(localStorage.getItem("user")) || null;
   const navigate = useNavigate();
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
-  const location =
-    useLocation().search.split("=").pop().split("%20").join("") ||
-    foodData[0].category;
-
+  const location = useLocation();
+  const category = location.search.split("%20").join("") || "MainDishes";
+  const position = location.pathname.split("/");
   const uniqueCategories = [...new Set(foodData.map((food) => food.category))];
   const cart = useMemo(
     () => JSON.parse(localStorage.getItem("cart")) || [],
     [update]
   );
+  const total = CalculateTotalPrice(cart);
 
   const handleTarget = (item) => {
     navigate(`?category=${item.name}`);
@@ -54,13 +56,25 @@ export const Products = () => {
   };
 
   const resieveOrderS = async () => {
-    // const paymentData = {};
-    socket.emit("/order", cart);
+    const paymentData = {
+      restaurant_id: user?.user?.id,
+      user_id: user?.user?.user_id,
+      product_data: JSON.stringify(cart),
+      price: total,
+      payment: "token",
+      longitude: position[2],
+      latitude: position[3],
+    };
+    if (!cart.length) {
+      alert("Savatcha bo'sh");
+      return;
+    }
+    socket.emit("/order", paymentData);
     navigate("/");
   };
 
   const filteredData = foodData.filter(
-    (item) => item.category.split("%20").join("") === location
+    (item) => item.category.split("%20").join("") === category
   );
 
   return (
@@ -73,7 +87,7 @@ export const Products = () => {
               <span
                 key={index}
                 onClick={() => handleTarget({ id: index + 1, name: item })}
-                className={location === item.name ? "active" : ""}
+                className={category === item.name ? "active" : ""}
               >
                 {item}
               </span>
@@ -139,6 +153,9 @@ export const Products = () => {
               </div>
             );
           })}
+          <p>
+            <span>Jami:</span> <span>{total}</span>
+          </p>
         </div>
       </div>
     </div>

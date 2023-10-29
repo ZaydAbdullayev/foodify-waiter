@@ -1,5 +1,5 @@
 const user = JSON.parse(localStorage.getItem("user")) || {};
-const token = user.token || [];
+const token = user.token || false;
 
 export const reAuth = (state = token, action) => {
   switch (action.type) {
