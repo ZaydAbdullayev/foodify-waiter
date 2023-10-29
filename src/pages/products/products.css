@@ -4,6 +4,7 @@
 }
 
 .res_products {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -97,13 +98,14 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--wh);
+  height: var(--iwh);
   padding: 0 4%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background: #333;
   border-top: 1px solid #ccc9;
+  z-index: 999;
 }
 
 .book_order :where(span, button) {

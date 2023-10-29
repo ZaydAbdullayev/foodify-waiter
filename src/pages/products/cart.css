@@ -1,0 +1,87 @@
+:root {
+  --wh: 40px;
+}
+
+.cart_box {
+  position: fixed;
+  top: 120%;
+  left: 0;
+  width: 100%;
+  height: 100dvh;
+  padding: 2% 0% var(--iwh);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #222;
+  overflow-y: auto;
+  z-index: 99;
+  transition: all 0.3s ease-in-out;
+}
+
+.cart_box.open {
+  top: 0;
+}
+
+.cart_box > p {
+  font-size: var(--fs3);
+  color: #fff;
+}
+
+.cart_body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.cart_body__item {
+  width: 100%;
+  padding: 1.5% 3%;
+  display: flex;
+  align-items: center;
+  gap: var(--gap1);
+  font-size: var(--fs5);
+  color: #eee;
+  border-bottom: 1px solid #ccc7cc;
+}
+
+.cart_body__item > :first-child {
+  inline-size: 30%;
+}
+
+.cart_body > :last-child {
+  border: none;
+}
+
+.cart_body__item > span {
+  flex: 1;
+}
+
+.update_item {
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+}
+
+.update_item :where(button, input) {
+  height: var(--wh);
+  background: #ccc;
+  border-radius: 10px;
+  color: #111;
+  border: none;
+  font-size: var(--fs4);
+}
+
+.update_item > button {
+  width: var(--wh);
+}
+
+.update_item > input {
+  width: calc(var(--wh) * 2);
+  text-align: center;
+}
+
+.update_item>input::-webkit-inner-spin-button{
+  display: none;
+}

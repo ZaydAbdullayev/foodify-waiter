@@ -1,29 +1,52 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import "./products.css";
+import "./cart.css";
 import { useNavigate, useLocation } from "react-router-dom";
+import AnimatedNumber from "react-animated-number";
 
 import { LuShoppingBasket } from "react-icons/lu";
 
 export const Products = () => {
   const navigate = useNavigate();
+  const [cart, setCart] = useState([]);
+  const [update, setUpdate] = useState(false);
+  const [open, setOpen] = useState(false);
   const location =
     useLocation().search.split("=").pop().split("%20").join("") ||
     foodData[0].category;
-  const cart = JSON.parse(localStorage.getItem("cart")) || [];
+  const formatValue = (value) => value.toFixed(0);
 
   const uniqueCategories = [...new Set(foodData.map((food) => food.category))];
+  const cs = useMemo(
+    () => setCart(JSON.parse(localStorage.getItem("cart")) || []),
+    [update]
+  );
 
   const handleTarget = (item) => {
     navigate(`?category=${item.name}`);
   };
 
   const addToCart = (item) => {
+    setUpdate(!update);
     const cartItem = cart.find((x) => x.id === item.id);
     if (cartItem) {
       cartItem.qty++;
       localStorage.setItem("cart", JSON.stringify(cart));
     } else {
       cart.push({ ...item, qty: 1 });
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  };
+
+  const updateCart = (item) => {
+    setUpdate(!update);
+    const cartItem = cart.find((x) => x.id === item.id);
+    if (cartItem && item.qty > 0) {
+      cartItem.qty = item.qty;
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else if (cartItem && item.qty === 0) {
+      const index = cart.indexOf(cartItem);
+      cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   };
@@ -67,10 +90,54 @@ export const Products = () => {
         </div>
       </div>
       <div className="book_order">
-        <span>
+        <span onClick={() => setOpen(!open)}>
           <LuShoppingBasket /> {cart.length ? <span></span> : <></>}
         </span>
         <button>Rasmiylashtirish</button>
+      </div>
+      <div className={open ? "cart_box open" : "cart_box"}>
+        <p>
+          <span>Mahsulotlar</span>
+        </p>
+        <div className="cart_body">
+          {cart.map((item) => {
+            return (
+              <div className="cart_body__item">
+                <p>{item.name}</p>
+                <span>
+                  <AnimatedNumber
+                    value={item.price || 2600 * item.qty}
+                    formatValue={formatValue}
+                  />{" "}
+                  so'm
+                </span>
+                <div className="update_item">
+                  <button
+                    onClick={() =>
+                      updateCart({ id: item.id, qty: item.qty - 1 })
+                    }
+                  >
+                    –
+                  </button>
+                  <input
+                    type="number"
+                    defaultValue={item.qty}
+                    onChange={(e) =>
+                      updateCart({ id: item.id, qty: e.target.value })
+                    }
+                  />
+                  <button
+                    onClick={() =>
+                      updateCart({ id: item.id, qty: item.qty + 1 })
+                    }
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
@@ -278,6 +345,3 @@ const foodData = [
     category: "Desserts",
   },
 ];
-
-
-

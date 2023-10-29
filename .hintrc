@@ -4,7 +4,10 @@
   ],
   "hints": {
     "detect-css-reflows/composite": "off",
-    "detect-css-reflows/paint": "off"
+    "detect-css-reflows/paint": "off",
+    "highest-available-document-mode": "off",
+    "manifest-file-extension": "off",
+    "meta-viewport": "off"
   },
   "browserslist": [
     "defaults",
