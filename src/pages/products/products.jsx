@@ -3,7 +3,9 @@ import "./products.css";
 import "./cart.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CalculateTotalPrice } from "../../service/calc.service";
+import { useGetProductQuery } from "../../service/order.service";
 import io from "socket.io-client";
+import { NumericFormat } from "react-number-format";
 
 import { LuShoppingBasket } from "react-icons/lu";
 
@@ -17,9 +19,14 @@ export const Products = () => {
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const category = location.search.split("%20").join("") || "MainDishes";
+  const { data = [] } = useGetProductQuery();
   const position = location.pathname.split("/");
-  const uniqueCategories = [...new Set(foodData.map((food) => food.category))];
+  const uniqueCategories = [
+    ...new Set(data?.innerData?.map((food) => food.category)),
+  ];
+  const category =
+    location.search.split("=")[1]?.split("%20")?.join("") ||
+    uniqueCategories[0];
   const cart = useMemo(
     () => JSON.parse(localStorage.getItem("cart")) || [],
     [update]
@@ -32,12 +39,12 @@ export const Products = () => {
 
   const addToCart = (item) => {
     setUpdate(!update);
-    const cartItem = cart.find((x) => x.id === item.id);
+    const cartItem = cart?.find((x) => x?.id === item?.id);
     if (cartItem) {
-      cartItem.qty++;
+      cartItem.quantity++;
       localStorage.setItem("cart", JSON.stringify(cart));
     } else {
-      cart.push({ ...item, qty: 1 });
+      cart.push({ ...item, quantity: 1 });
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   };
@@ -45,10 +52,10 @@ export const Products = () => {
   const updateCart = (item) => {
     setUpdate(!update);
     const cartItem = cart.find((x) => x.id === item.id);
-    if (cartItem && item.qty > 0) {
-      cartItem.qty = item.qty;
+    if (cartItem && item.quantity > 0) {
+      cartItem.quantity = item.quantity;
       localStorage.setItem("cart", JSON.stringify(cart));
-    } else if (cartItem && item.qty === 0) {
+    } else if (cartItem && item.quantity === 0) {
       const index = cart.indexOf(cartItem);
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
@@ -58,12 +65,13 @@ export const Products = () => {
   const resieveOrderS = async () => {
     const paymentData = {
       restaurant_id: user?.user?.id,
-      user_id: user?.user?.user_id,
+      user_id: `${position[3]}-stoll`,
       product_data: JSON.stringify(cart),
       price: total,
       payment: "token",
       longitude: position[2],
       latitude: position[3],
+      description: user?.user?.user_id,
     };
     if (!cart.length) {
       alert("Savatcha bo'sh");
@@ -73,8 +81,8 @@ export const Products = () => {
     navigate("/");
   };
 
-  const filteredData = foodData.filter(
-    (item) => item.category.split("%20").join("") === category
+  const filteredData = data?.innerData?.filter(
+    (item) => item?.category?.split(" ")?.join("") === category
   );
 
   return (
@@ -87,7 +95,7 @@ export const Products = () => {
               <span
                 key={index}
                 onClick={() => handleTarget({ id: index + 1, name: item })}
-                className={category === item.name ? "active" : ""}
+                className={category === item ? "active" : ""}
               >
                 {item}
               </span>
@@ -98,22 +106,23 @@ export const Products = () => {
       <div className="res_menu">
         <p>Mahsulotlar</p>
         <div className="res_menu_box">
-          {filteredData.map((item) => {
+          {filteredData?.map((item) => {
             return (
-              <span
+              <div
                 className="res_menu_item"
-                key={item.id}
+                key={item?.id}
                 onClick={() => addToCart(item)}
               >
-                {item.name}
-              </span>
+                <p style={{ textTransform: "capitalize" }}>{item.name}</p>
+                <span>{item.description}</span>
+              </div>
             );
           })}
         </div>
       </div>
       <div className="book_order">
         <span onClick={() => setOpen(!open)}>
-          <LuShoppingBasket /> {cart.length ? <span></span> : <></>}
+          <LuShoppingBasket /> {cart?.length ? <span></span> : <></>}
         </span>
         <button onClick={() => resieveOrderS()}>Rasmiylashtirish</button>
       </div>
@@ -122,29 +131,38 @@ export const Products = () => {
           <span>Mahsulotlar</span>
         </p>
         <div className="cart_body">
-          {cart.map((item) => {
+          {cart?.map((item) => {
             return (
               <div className="cart_body__item">
-                <p>{item.name}</p>
-                <span>{item.price || 5600 * item.qty} so'm</span>
+                <p>{item?.name}</p>
+                <p>{item?.description}</p>
+                <NumericFormat
+                  value={item?.price * item?.quantity}
+                  thousandSeparator=" "
+                  displayType="text"
+                  suffix=" so'm"
+                />{" "}
                 <div className="update_item">
                   <button
                     onClick={() =>
-                      updateCart({ id: item.id, qty: item.qty - 1 })
+                      updateCart({ id: item.id, quantity: item.quantity - 1 })
                     }
                   >
                     –
                   </button>
                   <input
                     type="number"
-                    defaultValue={item.qty}
+                    defaultValue={item?.quantity}
                     onChange={(e) =>
-                      updateCart({ id: item.id, qty: e.target.value })
+                      updateCart({
+                        id: item.id,
+                        quantity: e.target.value,
+                      })
                     }
                   />
                   <button
                     onClick={() =>
-                      updateCart({ id: item.id, qty: item.qty + 1 })
+                      updateCart({ id: item.id, quantity: item.quantity + 1 })
                     }
                   >
                     +
@@ -154,213 +172,16 @@ export const Products = () => {
             );
           })}
           <p>
-            <span>Jami:</span> <span>{total}</span>
+            <span>Jami:</span>{" "}
+            <NumericFormat
+              value={total || 0}
+              thousandSeparator=" "
+              displayType="text"
+              suffix=" so'm"
+            />{" "}
           </p>
         </div>
       </div>
     </div>
   );
 };
-
-const foodData = [
-  {
-    id: 1,
-    name: "Plov",
-    category: "Main Dishes",
-  },
-  {
-    id: 2,
-    name: "Manti",
-    category: "Main Dishes",
-  },
-  {
-    id: 3,
-    name: "Lagman",
-    category: "Main Dishes",
-  },
-  {
-    id: 4,
-    name: "Shashlik",
-    category: "Kebabs",
-  },
-  {
-    id: 5,
-    name: "Somsa",
-    category: "Appetizers",
-  },
-  {
-    id: 6,
-    name: "Shurpa",
-    category: "Soups",
-  },
-  {
-    id: 7,
-    name: "Naryn",
-    category: "Main Dishes",
-  },
-  {
-    id: 8,
-    name: "Chuchvara",
-    category: "Appetizers",
-  },
-  {
-    id: 9,
-    name: "Samsa",
-    category: "Appetizers",
-  },
-  {
-    id: 10,
-    name: "Dimlama",
-    category: "Main Dishes",
-  },
-  {
-    id: 11,
-    name: "Chorba",
-    category: "Soups",
-  },
-  {
-    id: 12,
-    name: "Kazan Kebab",
-    category: "Kebabs",
-  },
-  {
-    id: 13,
-    name: "Non",
-    category: "Breads",
-  },
-  {
-    id: 14,
-    name: "Shalgam",
-    category: "Beverages",
-  },
-  {
-    id: 15,
-    name: "Tandir Bread",
-    category: "Breads",
-  },
-  {
-    id: 16,
-    name: "Kefir",
-    category: "Beverages",
-  },
-  {
-    id: 17,
-    name: "Pishloq",
-    category: "Main Dishes",
-  },
-  {
-    id: 18,
-    name: "Shakarop",
-    category: "Desserts",
-  },
-  {
-    id: 19,
-    name: "Achichuk",
-    category: "Salads",
-  },
-  {
-    id: 20,
-    name: "Halva",
-    category: "Desserts",
-  },
-  {
-    id: 21,
-    name: "Sach",
-    category: "Main Dishes",
-  },
-  {
-    id: 22,
-    name: "Nishalda",
-    category: "Main Dishes",
-  },
-  {
-    id: 23,
-    name: "Gazpacho",
-    category: "Soups",
-  },
-  {
-    id: 24,
-    name: "Kabuli Palaw",
-    category: "Main Dishes",
-  },
-  {
-    id: 25,
-    name: "Kumis",
-    category: "Beverages",
-  },
-  {
-    id: 26,
-    name: "Beshbarmak",
-    category: "Main Dishes",
-  },
-  {
-    id: 27,
-    name: "Erishte",
-    category: "Main Dishes",
-  },
-  {
-    id: 28,
-    name: "Tandoori Bread",
-    category: "Breads",
-  },
-  {
-    id: 29,
-    name: "Tushbera",
-    category: "Appetizers",
-  },
-  {
-    id: 30,
-    name: "Shorva",
-    category: "Soups",
-  },
-  {
-    id: 31,
-    name: "Syrniki",
-    category: "Desserts",
-  },
-  {
-    id: 32,
-    name: "Smetana",
-    category: "Dairy Products",
-  },
-  {
-    id: 33,
-    name: "Zharkop",
-    category: "Desserts",
-  },
-  {
-    id: 34,
-    name: "Kompot",
-    category: "Beverages",
-  },
-  {
-    id: 35,
-    name: "Mastava",
-    category: "Soups",
-  },
-  {
-    id: 36,
-    name: "Tukhum Barak",
-    category: "Appetizers",
-  },
-  {
-    id: 37,
-    name: "Sousi",
-    category: "Main Dishes",
-  },
-  {
-    id: 38,
-    name: "Khvorost",
-    category: "Desserts",
-  },
-  {
-    id: 39,
-    name: "Makhsus",
-    category: "Main Dishes",
-  },
-  {
-    id: 40,
-    name: "Syr Posh",
-    category: "Desserts",
-  },
-];

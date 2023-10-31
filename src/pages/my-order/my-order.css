@@ -1,0 +1,8 @@
+.my_order_main {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--gap4);
+
+}

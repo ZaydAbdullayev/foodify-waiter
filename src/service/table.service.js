@@ -33,8 +33,25 @@ export const tableApi = createApi({
       }),
       providesTags: ["table"],
     }),
+
+    // path for ad tables to restaurant
+    addTable: builder.mutation({
+      query: (table) => ({
+        url: `/add/table`,
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: table,
+      }),
+      invalidatesTags: ["table"],
+    }),
   }),
 });
 
-export const { useGetLocationQuery, useGetTableMutation, useGetTablesQuery } =
-  tableApi;
+export const {
+  useGetLocationQuery,
+  useGetTableMutation,
+  useGetTablesQuery,
+  useAddTableMutation,
+} = tableApi;

@@ -3,9 +3,12 @@ import "./home.css";
 import { Table } from "../../components/tables/table";
 import { useGetLocationQuery } from "../../service/table.service";
 import { useGetTableMutation } from "../../service/table.service";
-import { async } from "q";
+import io from "socket.io-client";
+
+const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
 
 export const Home = () => {
+  const user = JSON.parse(localStorage.getItem("user")) || null;
   const { data: category = [] } = useGetLocationQuery();
   const [active, setActive] = useState("");
   const [tablesData, setTablesData] = useState([]);
@@ -14,13 +17,19 @@ export const Home = () => {
 
   const filterData = async (type) => {
     setActive(type);
-    const value = type ? type : category[0];
-    const { data = [] } = await getTable(value);
-    setTablesData(data?.data);
+    // const { data: table = [] } = getTable(type);
+    const data = {
+      res_id: user?.user?.id,
+      location: type,
+    };
+    socket.emit("/get/tables", data);
+    socket.on(`/get/table/${data.res_id}/${data.location}`, (data) => {
+      setTablesData(data);
+    });
   };
 
   useEffect(() => {
-    filterData(category[0]);
+    filterData(category?.data?.[0]);
   }, []);
 
   return (

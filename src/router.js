@@ -7,6 +7,8 @@ import { Auth } from "./auth/auth";
 import { CheackDepartment, Login } from "./auth/login";
 import { Layout } from "./layout/layout";
 import { Products } from "./pages/products/products";
+import { OrderById } from "./pages/orders/orders";
+import { PaymentCheck } from "./components/payment-check/check";
 
 export const Router = () => {
   return (
@@ -17,12 +19,11 @@ export const Router = () => {
         <Route path="/" element={<Auth />}>
           <Route path="/" element={<Home />} />
           <Route path="category/:type/:number" element={<Products />} />
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="/:type/:number" element={<OrderById />} />
+          <Route path="payment/check" element={<PaymentCheck />} />
         </Route>
       </Route>
     </Routes>
   );
 };
 
-export const About = () => <h1>About</h1>;
-export const Dashboard = () => <h1>Dashboard</h1>;

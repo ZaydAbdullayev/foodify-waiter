@@ -61,7 +61,12 @@
 }
 
 .cart_body__item > :first-child {
-  inline-size: 30%;
+  inline-size: 28%;
+  text-transform: capitalize;
+}
+
+.cart_body__item > :nth-child(2) {
+  inline-size: 18%;
 }
 
 .cart_body > :last-child {
