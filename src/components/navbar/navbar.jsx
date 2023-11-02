@@ -6,7 +6,7 @@ import { useGetLocationQuery } from "../../service/table.service";
 import { useAddTableMutation } from "../../service/table.service";
 
 import { RiMenu3Fill } from "react-icons/ri";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiSolidFoodMenu } from "react-icons/bi";
 import { MdTableBar } from "react-icons/md";
 
 export const Navbar = memo(() => {
@@ -28,20 +28,24 @@ export const Navbar = memo(() => {
     }
   };
 
+  // <span className="add_table_btn" onClick={() => setOpen(true)}>
+  //   <b>+</b>
+  //   <MdTableBar />
+  // </span>
+
   return (
     <div className="box" style={{ background: "#222" }}>
       <div className="header">
-        <div className="menu" onClick={() => navigate(-1)}>
+        <div className="menu">
           {location !== "/" ? (
-            <BiArrowBack />
+            <BiArrowBack onClick={() => navigate(-1)} />
           ) : (
-            <span className="add_table_btn" onClick={() => setOpen(true)}>
-              <b>+</b>
-              <MdTableBar />
-            </span>
+            <BiSolidFoodMenu onClick={() => navigate("/my/orders")} />
           )}
         </div>
-        <p>Tables</p>
+        <p style={{ textTransform: "capitalize" }}>
+          {location === "/" ? "Tables" : location.split("/").join(" ")}
+        </p>
         <div className="menu">
           <RiMenu3Fill />
         </div>

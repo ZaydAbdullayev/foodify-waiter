@@ -3,8 +3,5 @@ export const CalculateTotalPrice = (cart) => {
     (accumulator, item) => accumulator + item?.price * item?.quantity,
     0
   );
-
-  const discountedPrice = totalPrice * 0.1;
-
-  return totalPrice + discountedPrice;
+  return totalPrice;
 };

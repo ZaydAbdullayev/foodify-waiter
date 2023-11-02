@@ -44,7 +44,9 @@ export const OrderById = () => {
         });
       })}
       <div className="order_footer">
-        <button onClick={() => navigate(-1)}>Orqaga</button>
+        <button onClick={() => navigate(`/payment/check`)}>
+          Check chiqarish
+        </button>
         <button onClick={() => navigate(`/category${location}`)}>
           Buyutma qo'shish
         </button>

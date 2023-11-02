@@ -43,8 +43,8 @@
   left: 50%;
   width: 0;
   height: 0;
-  backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
   transition: all 0.3s ease-in-out;
   overflow: hidden;
   z-index: 9999999;

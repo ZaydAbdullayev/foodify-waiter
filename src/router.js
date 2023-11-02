@@ -9,6 +9,7 @@ import { Layout } from "./layout/layout";
 import { Products } from "./pages/products/products";
 import { OrderById } from "./pages/orders/orders";
 import { PaymentCheck } from "./components/payment-check/check";
+import { MyOrder } from "./pages/my-order/my-order";
 
 export const Router = () => {
   return (
@@ -21,6 +22,7 @@ export const Router = () => {
           <Route path="category/:type/:number" element={<Products />} />
           <Route path="/:type/:number" element={<OrderById />} />
           <Route path="payment/check" element={<PaymentCheck />} />
+          <Route path="my/orders" element={<MyOrder />} />
         </Route>
       </Route>
     </Routes>

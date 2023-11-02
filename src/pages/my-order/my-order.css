@@ -1,8 +1,68 @@
+:root {
+  --iwh: 40px;
+}
+
 .my_order_main {
   width: 100%;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: var(--gap4);
+  color: #fff;
+}
 
+.my_order_main > p {
+  inline-size: 100%;
+  padding: 1.5% var(--pd3);
+  font-size: var(--fs3);
+}
+
+.my_order__body {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.my_order__item {
+  width: 100%;
+  padding: 1.5% var(--pd3);
+  display: flex;
+  align-items: center;
+  font-size: var(--fs4);
+  color: #fff;
+  border-bottom: 1px solid #ccc;
+}
+
+.my_order__body>:last-child{
+  border: none;
+}
+
+.my_order__item > :first-child {
+  inline-size: 7%;
+}
+
+.my_order__item > :nth-child(2) {
+  inline-size: 15%;
+}
+
+.my_order__item > :nth-child(3) {
+  inline-size: 27%;
+}
+
+.my_order__item > :nth-child(4) {
+  inline-size: 25%;
+}
+
+.my_order__item > :nth-child(5) {
+  flex: 1;
+}
+
+.my_order__item > p > i {
+  width: var(--iwh);
+  height: var(--iwh);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs3);
+  color: #222;
+  border-radius: 50%;
 }
