@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Table } from "../../components/tables/table";
 import { useGetLocationQuery } from "../../service/table.service";
-import { useGetTableMutation } from "../../service/table.service";
 import io from "socket.io-client";
 
 const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
@@ -12,12 +11,10 @@ export const Home = () => {
   const { data: category = [] } = useGetLocationQuery();
   const [active, setActive] = useState("");
   const [tablesData, setTablesData] = useState([]);
-  const [getTable] = useGetTableMutation();
   // isLoading: loading, isError: error, data: tables = []
 
   const filterData = async (type) => {
     setActive(type);
-    // const { data: table = [] } = getTable(type);
     const data = {
       res_id: user?.user?.id,
       location: type,

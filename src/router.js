@@ -19,8 +19,8 @@ export const Router = () => {
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<Auth />}>
           <Route path="/" element={<Home />} />
-          <Route path="category/:type/:number" element={<Products />} />
-          <Route path="/:type/:number" element={<OrderById />} />
+          <Route path="category/:type/:number/:id" element={<Products />} />
+          <Route path="/:type/:number/:id" element={<OrderById />} />
           <Route path="payment/check" element={<PaymentCheck />} />
           <Route path="my/orders" element={<MyOrder />} />
         </Route>
@@ -28,4 +28,3 @@ export const Router = () => {
     </Routes>
   );
 };
-

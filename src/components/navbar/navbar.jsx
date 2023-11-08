@@ -33,20 +33,32 @@ export const Navbar = memo(() => {
   //   <MdTableBar />
   // </span>
 
+  const backWord = () => {
+    navigate(-1);
+  };
+
   return (
     <div className="box" style={{ background: "#222" }}>
       <div className="header">
         <div className="menu">
           {location !== "/" ? (
-            <BiArrowBack onClick={() => navigate(-1)} />
+            <BiArrowBack onClick={() => backWord()} />
           ) : (
             <BiSolidFoodMenu onClick={() => navigate("/my/orders")} />
           )}
         </div>
         <p style={{ textTransform: "capitalize" }}>
-          {location === "/" ? "Tables" : location.split("/").join(" ")}
+          {location === "/"
+            ? "Tables"
+            : location.split("/").join(" ").split("category").join(" ")}
         </p>
         <div className="menu">
+          {location === "/" && (
+            <span className="add_table_btn" onClick={() => setOpen(true)}>
+              <b>+</b>
+              <MdTableBar />{" "}
+            </span>
+          )}{" "}
           <RiMenu3Fill />
         </div>
       </div>

@@ -17,7 +17,7 @@ export const MyOrder = () => {
     <div className="my_order_main">
       <div className="my_order__body">
         <div className="my_order__item">
-          <p>ID</p>
+          <p>№</p>
           <p>Stoll</p>
           <p>Vaqti</p>
           <span>To'lov</span>
@@ -35,7 +35,7 @@ export const MyOrder = () => {
               <p>{reverseIndex}</p>
               <p>{item.stoll} - stoll</p>
               <p>
-                {item.resieveAt} | {item.time}
+                <span>{item.resieveAt} |</span> {item.time}
               </p>
               <NumericFormat
                 displayType="text"
@@ -59,18 +59,14 @@ export const MyOrder = () => {
             </div>
           );
         })}
-        <div className="my_order__item">
-          <p></p>
-          <p></p>
-          <p></p>
-          <span></span>
+        <div className="total_price">
+          <p>Bugungi sof foyda:</p>
           <NumericFormat
             displayType="text"
             value={totalPrice * 0.1}
             thousandSeparator=" "
             suffix=" so'm"
           />
-          <p></p>
         </div>
       </div>
     </div>

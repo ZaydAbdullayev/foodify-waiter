@@ -1,5 +1,5 @@
 :root {
-  --wh: 40px;
+  --wh1: 40px;
   --ipd: 1.5% 3%;
 }
 
@@ -62,7 +62,13 @@
 
 .cart_body__item > :first-child {
   inline-size: 28%;
+  display: flex;
+  flex-direction: column;
   text-transform: capitalize;
+}
+
+.cart_body__item > :first-child :where(span, b) {
+  display: none;
 }
 
 .cart_body__item > :nth-child(2) {
@@ -84,7 +90,7 @@
 }
 
 .update_item :where(button, input) {
-  height: var(--wh);
+  height: var(--wh1);
   background: #ccc;
   border-radius: 10px;
   color: #111;
@@ -93,14 +99,99 @@
 }
 
 .update_item > button {
-  width: var(--wh);
+  width: var(--wh1);
 }
 
 .update_item > input {
-  width: calc(var(--wh) * 2);
+  width: calc(var(--wh1) * 1.5);
   text-align: center;
 }
 
 .update_item > input::-webkit-inner-spin-button {
   display: none;
+}
+
+.takeaway {
+  position: fixed;
+  bottom: calc(var(--iwh2) + 2.5%);
+  left: 3%;
+  padding: var(--pd5);
+  display: flex;
+  align-items: center;
+  gap: var(--gap3);
+  background: #ccc;
+  font-size: var(--fs4);
+  border-radius: 30px;
+  font-weight: 600;
+  color: #222;
+}
+
+.takeaway.active {
+  background: lime;
+  color: #fff;
+}
+
+.takeaway > svg {
+  font-size: var(--fs3);
+}
+
+@media (max-width: 730px) {
+  .cart_body__item > :first-child {
+    inline-size: 24%;
+  }
+
+  .cart_body__item > :nth-child(2) {
+    inline-size: 16%;
+  }
+}
+
+@media (max-width: 650px) {
+  :root {
+    --wh1: 35px;
+  }
+
+  .cart_body__item > :first-child {
+    flex: 1;
+  }
+
+  .cart_body__item > :first-child > b {
+    text-transform: lowercase;
+    font-weight: 400;
+    display: flex;
+    font-size: var(--fs6);
+    color: #ccc;
+  }
+
+  .cart_body__item > :nth-child(2) {
+    display: none;
+  }
+
+  .cart_body__item > span {
+    flex: none;
+  }
+}
+
+@media (max-width: 550px) {
+  .update_item {
+    gap: var(--gap6);
+  }
+
+  .update_item :where(button, input) {
+    border-radius: 7px;
+  }
+}
+
+@media (max-width: 450px) {
+  .cart_body__item > :first-child > span {
+    display: flex;
+  }
+
+  .cart_body__item > :nth-child(3) {
+    display: none;
+  }
+
+  .takeaway {
+    position: fixed;
+    bottom: calc(var(--iwh2) + 1.5%);
+  }
 }

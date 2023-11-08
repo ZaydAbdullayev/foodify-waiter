@@ -32,7 +32,7 @@
   border-bottom: 1px solid #ccc;
 }
 
-.my_order__body>:last-child{
+.my_order__body > :last-child {
   border: none;
 }
 
@@ -65,4 +65,74 @@
   font-size: var(--fs3);
   color: #222;
   border-radius: 50%;
+}
+
+.total_price {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: calc(var(--pd3) * 2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111;
+  font-size: var(--fs4);
+  border-top: 1px solid #ccc;
+}
+
+@media (max-width: 700px) {
+  .my_order__item {
+    font-size: var(--fs5);
+  }
+
+  .my_order__item > :first-child {
+    inline-size: 5%;
+  }
+
+  .my_order__item > :nth-child(2) {
+    inline-size: 15%;
+  }
+
+  .my_order__item > :nth-child(3) {
+    inline-size: 29%;
+  }
+}
+@media (max-width: 540px) {
+  .my_order__item > :first-child {
+    inline-size: 7%;
+  }
+
+  .my_order__item > :nth-child(2) {
+    inline-size: 18%;
+  }
+
+  .my_order__item > :nth-child(3) {
+    inline-size: 33%;
+  }
+
+  .my_order__item > :nth-child(4) {
+    flex: 1;
+  }
+
+  .my_order__item > :nth-child(5) {
+    display: none;
+  }
+}
+@media (max-width: 460px) {
+  .my_order__item > :first-child {
+    inline-size: 8%;
+  }
+
+  .my_order__item > :nth-child(2) {
+    inline-size: 24%;
+  }
+
+  .my_order__item > :nth-child(3) {
+    inline-size: 18%;
+  }
+
+  .my_order__item > :nth-child(3) > span {
+    display: none;
+  }
 }

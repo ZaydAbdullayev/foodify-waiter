@@ -87,16 +87,18 @@ export const CheackDepartment = () => {
   const loginD = async () => {
     const user = JSON.parse(localStorage.getItem("user")) || {};
     try {
-      const { data } = await checkDep(pass);
-
-      const dep = data?.innerData?.user?.user?.department;
-      const mergedUser = {
-        ...user,
-        user: { ...user?.user, ...data?.innerData?.user?.user },
-      };
-      localStorage.setItem("department", JSON.stringify(dep));
-      localStorage.setItem("user", JSON.stringify(mergedUser));
-      window.location.href = "/";
+      const { error, data } = await checkDep(pass);
+      if (error) return alert("Pin xato!");
+      if (data) {
+        const dep = data?.innerData?.user?.user?.department;
+        const mergedUser = {
+          ...user,
+          user: { ...user?.user, ...data?.innerData?.user?.user },
+        };
+        localStorage.setItem("department", JSON.stringify(dep));
+        localStorage.setItem("user", JSON.stringify(mergedUser));
+        window.location.href = "/";
+      }
     } catch (error) {
       setErr(true);
       setPass("");

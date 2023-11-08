@@ -2,23 +2,36 @@ import React from "react";
 import "./orders.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetOrderQuery } from "../../service/order.service";
+import io from "socket.io-client";
 
 import { GiHotMeal } from "react-icons/gi";
 import { BiSolidTimer } from "react-icons/bi";
 import { IoMdDoneAll } from "react-icons/io";
 
+// const socket = io("https://backup.foodify.uz");
+const socket = io("http://localhost:80");
+// const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+
 export const OrderById = () => {
   const location = useLocation().pathname;
   const id = location.split("/").pop();
   const navigate = useNavigate();
-  const { data = [] } = useGetOrderQuery(`${id}-stoll`);
-  console.log(data);
+  const { data = [] } = useGetOrderQuery(id);
+
+  const finish = () => {
+    const uData = {
+      id: id,
+      status: 0,
+    };
+    socket.emit("/update/table", uData);
+    navigate("/");
+  };
+
   return (
     <div className="order_box">
       <p>{location.split("/").pop()} - stoll</p>
       {data?.innerData?.map((item) => {
         const product_data = JSON.parse(item?.product_data || "[]");
-        console.log(product_data);
         return product_data?.map((item) => {
           return (
             <div className="order_box__item" key={item.id}>
@@ -50,7 +63,7 @@ export const OrderById = () => {
         <button onClick={() => navigate(`/category${location}`)}>
           Buyutma qo'shish
         </button>
-        <button>Hisobni yakunlash</button>
+        <button onClick={() => finish()}>Hisobni yakunlash</button>
       </div>
     </div>
   );

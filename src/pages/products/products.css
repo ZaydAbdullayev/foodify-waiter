@@ -1,6 +1,8 @@
 :root {
-  --wh: 90px;
-  --iwh: 125px;
+  --wh1: 90px;
+  --iwh1: 55px;
+  --iwh2: 80px;
+  --tik: 15px;
 }
 
 .res_products {
@@ -15,7 +17,7 @@
   position: sticky;
   top: -1px;
   width: 100%;
-  height: var(--iwh);
+  height: var(--iwh1);
   display: flex;
   flex-wrap: wrap;
   line-height: 1.8;
@@ -61,7 +63,7 @@
 .res_menu {
   width: 100%;
   min-height: 100vh;
-  padding-bottom: calc(var(--wh) + 10px);
+  padding-bottom: calc(var(--wh1) + 10px);
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
@@ -70,34 +72,56 @@
 
 .res_menu_box {
   width: 100%;
-  padding: 1% 5%;
+  padding: 3% 5% 1%;
   display: flex;
   flex-wrap: wrap;
   gap: var(--gap3);
-  padding-bottom: calc(var(--iwh) + 20px);
+  padding-bottom: calc(var(--iwh2) + 20px);
 }
 
 .res_menu_item {
+  position: relative;
   width: calc(100% / 4 - var(--gap3) * 3 / 4);
   aspect-ratio: 3/1.9;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
   font-size: var(--fs3);
   color: #fff;
   background: #333;
   letter-spacing: 1px;
+  border-radius: 15px;
 }
 
-.res_menu_item>span{
+.res_menu_item:active {
+  background: #222;
+  transform: scale(1.1);
+}
+
+.res_menu_item > span {
   font-size: var(--fs5);
   line-height: 2;
   color: #ccc;
 }
 
+.res_menu_item > i {
+  position: absolute;
+  bottom: -3%;
+  left: -3%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs8);
+  width: calc(var(--tik) * 1.5);
+  height: calc(var(--tik) * 1.5);
+  border-radius: 50%;
+  background: #f00;
+}
+
 .order_list_item {
-  height: var(--iwh);
+  height: var(--iwh2);
 }
 
 .book_order {
@@ -105,7 +129,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: var(--iwh);
+  height: var(--iwh2);
   padding: 0 4%;
   display: flex;
   align-items: center;
@@ -129,22 +153,39 @@
   border: none;
 }
 
+.book_order > button:active {
+  opacity: 0.5;
+}
+
 .book_order > span > svg {
   font-size: var(--fs2);
 }
 
-.book_order > span>span{
-  position: absolute;
-  top: 10%;
-  right: 10%;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background: #f00;
-}
+@media (max-width: 550px) {
+  :root {
+    --wh1: 80px;
+    --iwh2: 70px;
+  }
 
-@media (max-width: 500px) {
   .res_menu_item {
     width: calc(100% / 3 - var(--gap3) * 2 / 3);
+  }
+}
+
+@media (max-width: 430px) {
+  :root {
+    --iwh1: 45px;
+    --wh1: 70px;
+  }
+
+  .res_menu_item {
+    width: calc(100% / 2 - var(--gap3) / 2);
+    aspect-ratio: 3/1.6;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --iwh1: 40px;
   }
 }

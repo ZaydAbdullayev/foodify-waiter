@@ -8,29 +8,32 @@ import io from "socket.io-client";
 import { NumericFormat } from "react-number-format";
 
 import { LuShoppingBasket } from "react-icons/lu";
+import { BiCircle } from "react-icons/bi";
+import { FiCheckCircle } from "react-icons/fi";
 
 // const socket = io("https://backup.foodify.uz");
-// const socket = io("http://localhost:80");
-const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+const socket = io("http://localhost:80");
+// const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
 
 export const Products = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const navigate = useNavigate();
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
+  // const [cart, setCart] = useState([]);
+  const [takeaway, setTakeaway] = useState(false);
   const location = useLocation();
   const { data = [] } = useGetProductQuery();
   const position = location.pathname.split("/");
   const uniqueCategories = [
-    ...new Set(data?.innerData?.map((food) => food.category)),
+    ...new Set(data?.innerData?.map((food) => food?.category)),
   ];
   const category =
     location.search.split("=")[1]?.split("%20")?.join("") ||
     uniqueCategories[0];
-  const cart = useMemo(
-    () => JSON.parse(localStorage.getItem("cart")) || [],
-    [update]
-  );
+  const cart = useMemo(() => {
+    return JSON?.parse(localStorage?.getItem("cart")) || [];
+  }, [update]);
   const total = CalculateTotalPrice(cart);
 
   const handleTarget = (item) => {
@@ -42,9 +45,9 @@ export const Products = () => {
     const cartItem = cart?.find((x) => x?.id === item?.id);
     if (cartItem) {
       cartItem.quantity++;
-      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage?.setItem("cart", JSON?.stringify(cart));
     } else {
-      cart.push({ ...item, quantity: 1 });
+      cart?.push({ ...item, quantity: 1 });
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   };
@@ -52,8 +55,8 @@ export const Products = () => {
   const updateCart = (item) => {
     setUpdate(!update);
     const cartItem = cart.find((x) => x.id === item.id);
-    if (cartItem && item.quantity > 0) {
-      cartItem.quantity = item.quantity;
+    if (cartItem && item?.quantity > 0) {
+      cartItem.quantity = item?.quantity;
       localStorage.setItem("cart", JSON.stringify(cart));
     } else if (cartItem && item.quantity === 0) {
       const index = cart.indexOf(cartItem);
@@ -64,8 +67,9 @@ export const Products = () => {
 
   const resieveOrderS = async () => {
     const paymentData = {
+      address: `&${position[3]}-stoll`,
       restaurant_id: user?.user?.id,
-      user_id: `${position[3]}-stoll`,
+      user_id: position[4],
       product_data: JSON.stringify(cart),
       price: total,
       payment: "token",
@@ -73,11 +77,17 @@ export const Products = () => {
       latitude: position[3],
       description: user?.user?.user_id,
     };
+    const uData = {
+      id: position[4],
+      status: 2,
+    };
     if (!cart.length) {
       alert("Savatcha bo'sh");
       return;
     }
     socket.emit("/order", paymentData);
+    socket.emit("/update/table", uData);
+    localStorage.removeItem("cart");
     navigate("/");
   };
 
@@ -88,7 +98,6 @@ export const Products = () => {
   return (
     <div className="res_products">
       <div className="res_category">
-        <p>Kategoriyalar</p>
         <div className="res_category_box">
           {uniqueCategories?.map((item, index) => {
             return (
@@ -104,17 +113,18 @@ export const Products = () => {
         </div>
       </div>
       <div className="res_menu">
-        <p>Mahsulotlar</p>
         <div className="res_menu_box">
           {filteredData?.map((item) => {
+            const count = cart.filter((x) => x.id === item.id);
             return (
               <div
                 className="res_menu_item"
                 key={item?.id}
                 onClick={() => addToCart(item)}
               >
-                <p style={{ textTransform: "capitalize" }}>{item.name}</p>
-                <span>{item.description}</span>
+                <p style={{ textTransform: "capitalize" }}>{item?.name}</p>
+                <span>{item?.description}</span>
+                {count[0]?.quantity && <i>{count[0]?.quantity}</i>}
               </div>
             );
           })}
@@ -122,7 +132,7 @@ export const Products = () => {
       </div>
       <div className="book_order">
         <span onClick={() => setOpen(!open)}>
-          <LuShoppingBasket /> {cart?.length ? <span></span> : <></>}
+          <LuShoppingBasket />
         </span>
         <button onClick={() => resieveOrderS()}>Rasmiylashtirish</button>
       </div>
@@ -133,15 +143,24 @@ export const Products = () => {
         <div className="cart_body">
           {cart?.map((item) => {
             return (
-              <div className="cart_body__item">
-                <p>{item?.name}</p>
+              <div className="cart_body__item" key={item?.id}>
+                <p>
+                  {item?.name}
+                  <b>{item?.description}</b>
+                  <NumericFormat
+                    value={item?.price * item?.quantity}
+                    thousandSeparator=" "
+                    displayType="text"
+                    suffix=" so'm"
+                  />
+                </p>
                 <p>{item?.description}</p>
                 <NumericFormat
                   value={item?.price * item?.quantity}
                   thousandSeparator=" "
                   displayType="text"
                   suffix=" so'm"
-                />{" "}
+                />
                 <div className="update_item">
                   <button
                     onClick={() =>
@@ -181,6 +200,13 @@ export const Products = () => {
             />{" "}
           </p>
         </div>
+        <label
+          className={takeaway ? "takeaway active" : "takeaway"}
+          onClick={() => setTakeaway(!takeaway)}
+        >
+          {takeaway ? <FiCheckCircle /> : <BiCircle />}
+          Olib ketish
+        </label>
       </div>
     </div>
   );

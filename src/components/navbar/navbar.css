@@ -18,8 +18,11 @@
 }
 
 .menu {
+  display: flex;
+  align-items: center;
   font-size: var(--fs2);
   cursor: pointer;
+  gap: var(--gap6);
 }
 
 .add_table_btn {
@@ -127,4 +130,10 @@
 
 .add_table > button:active {
   opacity: 0.7;
+}
+
+@media (max-width: 550px) {
+  .add_table {
+    max-width: 500px;
+  }
 }

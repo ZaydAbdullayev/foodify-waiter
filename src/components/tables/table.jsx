@@ -6,11 +6,12 @@ export const Table = ({ data }) => {
   const navigate = useNavigate();
 
   const handleTarget = (item) => {
+    const location = item?.location?.split(" ")?.join("-");
     if (item?.status === 0) {
-      navigate(`category/${item?.type}/${item?.id}`);
+      navigate(`category/${location}/${item?.name}/${item?.id}`);
       return;
     }
-    navigate(`${item?.type}/${item?.id}`);
+    navigate(`${location}/${item?.name}/${item?.id}`);
   };
 
   return data?.map((item) => {
@@ -18,13 +19,7 @@ export const Table = ({ data }) => {
       <div
         className="table_box"
         key={item?.id}
-        onClick={() =>
-          handleTarget({
-            type: item?.location,
-            id: item?.id,
-            status: item?.status,
-          })
-        }
+        onClick={() => handleTarget(item)}
       >
         <div
           className={

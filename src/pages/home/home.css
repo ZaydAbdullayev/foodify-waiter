@@ -33,6 +33,7 @@
 .home_table_box {
   width: 100%;
   padding: var(--pd2);
+  padding-top: 5%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
