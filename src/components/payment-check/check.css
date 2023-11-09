@@ -58,3 +58,8 @@
   font-size: var(--fs6);
   letter-spacing: 0.05rem;
 }
+
+.check_product>pre>:last-child{
+  font-size: var(--fs6);
+  padding-left: 20%;
+}

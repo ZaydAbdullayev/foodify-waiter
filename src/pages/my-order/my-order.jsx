@@ -1,6 +1,7 @@
 import React from "react";
 import "./my-order.css";
 import { useNavigate } from "react-router-dom";
+// import { useGetOrderQuery } from "../../service/order.service";
 
 import { GiHotMeal } from "react-icons/gi";
 import { IoMdDoneAll } from "react-icons/io";
@@ -8,8 +9,10 @@ import { NumericFormat } from "react-number-format";
 
 export const MyOrder = () => {
   const navigate = useNavigate();
-  const reversedData = data.slice().reverse();
-  const totalPrice = data.reduce((acc, current) => {
+  // const { data = [] } = useGetOrderQuery();
+  // console.log(data);
+  const reversedData = Odata.slice().reverse();
+  const totalPrice = Odata.reduce((acc, current) => {
     return acc + current.price;
   }, 0);
 
@@ -25,12 +28,12 @@ export const MyOrder = () => {
           <p>Status</p>
         </div>
         {reversedData.map((item, index) => {
-          const reverseIndex = data.length - index;
+          const reverseIndex = Odata.length - index;
           return (
             <div
               className="my_order__item"
               key={item.id}
-              onClick={() => navigate(`/${item.type}/${item.stoll}`)}
+              onClick={() => navigate(`/${item.type}/${item.stoll}/${item.id}`)}
             >
               <p>{reverseIndex}</p>
               <p>{item.stoll} - stoll</p>
@@ -73,7 +76,7 @@ export const MyOrder = () => {
   );
 };
 
-const data = [
+const Odata = [
   {
     id: 932847,
     stoll: 12,

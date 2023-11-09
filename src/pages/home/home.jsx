@@ -4,16 +4,16 @@ import { Table } from "../../components/tables/table";
 import { useGetLocationQuery } from "../../service/table.service";
 import io from "socket.io-client";
 
-const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+const socket = io("https://799twrl4-80.euw.devtunnels.ms");
 
 export const Home = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const { data: category = [] } = useGetLocationQuery();
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState(category?.data?.[0]);
   const [tablesData, setTablesData] = useState([]);
   // isLoading: loading, isError: error, data: tables = []
 
-  const filterData = async (type) => {
+  const filterData = (type) => {
     setActive(type);
     const data = {
       res_id: user?.user?.id,

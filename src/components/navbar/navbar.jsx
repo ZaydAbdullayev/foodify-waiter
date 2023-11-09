@@ -17,6 +17,12 @@ export const Navbar = memo(() => {
   const [newType, setNewType] = useState("");
   const [open, setOpen] = useState(false);
   const [addTable] = useAddTableMutation();
+  const stoll = location
+    .split("/")
+    .join(" ")
+    .split("category")
+    .pop()
+    .split(" ");
 
   const addNewTable = async (e) => {
     e.preventDefault();
@@ -24,14 +30,10 @@ export const Navbar = memo(() => {
     const values = Object.fromEntries(formData.entries());
     const { data } = await addTable(values);
     if (data) {
+      e.target.reset();
       setOpen(false);
     }
   };
-
-  // <span className="add_table_btn" onClick={() => setOpen(true)}>
-  //   <b>+</b>
-  //   <MdTableBar />
-  // </span>
 
   const backWord = () => {
     navigate(-1);
@@ -50,7 +52,9 @@ export const Navbar = memo(() => {
         <p style={{ textTransform: "capitalize" }}>
           {location === "/"
             ? "Tables"
-            : location.split("/").join(" ").split("category").join(" ")}
+            : location === "/my/orders" || location.startsWith("/payment/check")
+            ? `${stoll[1]} ${stoll[2]}`
+            : `${stoll[1]} ${stoll[2]} - stoll`}
         </p>
         <div className="menu">
           {location === "/" && (
@@ -86,7 +90,7 @@ export const Navbar = memo(() => {
                 name="location"
                 required
                 autoComplete="off"
-                placeholder="Joylashuv nomi qo'shing*"
+                placeholder="Joylashuv nomi qo'shing *"
               />
             )}
             <input
@@ -94,7 +98,7 @@ export const Navbar = memo(() => {
               name="name"
               required
               autoComplete="off"
-              placeholder="Xona yoki Stoll raqamini kiriting*"
+              placeholder="Xona yoki Stoll raqamini kiriting *"
             />
             <input type="hidden" name="res_id" value={user?.user?.id} />
             <button>Qo'shish</button>

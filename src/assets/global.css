@@ -73,6 +73,9 @@ textarea {
   gap: var(--gap3);
 }
 
+.relative {
+  position: relative;
+}
 @keyframes animation {
   from {
     transform: scale(0.5);

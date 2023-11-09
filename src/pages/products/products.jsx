@@ -12,15 +12,14 @@ import { BiCircle } from "react-icons/bi";
 import { FiCheckCircle } from "react-icons/fi";
 
 // const socket = io("https://backup.foodify.uz");
-const socket = io("http://localhost:80");
-// const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+// const socket = io("http://localhost:80");
+const socket = io("https://799twrl4-80.euw.devtunnels.ms");
 
 export const Products = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const navigate = useNavigate();
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
-  // const [cart, setCart] = useState([]);
   const [takeaway, setTakeaway] = useState(false);
   const location = useLocation();
   const { data = [] } = useGetProductQuery();
@@ -35,6 +34,20 @@ export const Products = () => {
     return JSON?.parse(localStorage?.getItem("cart")) || [];
   }, [update]);
   const total = CalculateTotalPrice(cart);
+
+  const paymentData = {
+    address: `&${position[3]}-stoll`,
+    restaurant_id: user?.user?.id,
+    user_id: position[4],
+    product_data: JSON.stringify(cart),
+    price: total,
+    payment: "token",
+    table_name: position[3],
+    worker_name: user?.user?.name ,
+    worker_id:user?.user?.user_id,
+    order_type: takeaway ? "Olib ketish" : "Restoran",
+    t_location: position[2]
+  };
 
   const handleTarget = (item) => {
     navigate(`?category=${item.name}`);
@@ -66,17 +79,6 @@ export const Products = () => {
   };
 
   const resieveOrderS = async () => {
-    const paymentData = {
-      address: `&${position[3]}-stoll`,
-      restaurant_id: user?.user?.id,
-      user_id: position[4],
-      product_data: JSON.stringify(cart),
-      price: total,
-      payment: "token",
-      longitude: position[2],
-      latitude: position[3],
-      description: user?.user?.user_id,
-    };
     const uData = {
       id: position[4],
       status: 2,

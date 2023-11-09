@@ -9,8 +9,8 @@ import { BiSolidTimer } from "react-icons/bi";
 import { IoMdDoneAll } from "react-icons/io";
 
 // const socket = io("https://backup.foodify.uz");
-const socket = io("http://localhost:80");
-// const socket = io("https://lncxlmks-80.inc1.devtunnels.ms");
+// const socket = io("http://localhost:80");
+const socket = io("https://799twrl4-80.euw.devtunnels.ms");
 
 export const OrderById = () => {
   const location = useLocation().pathname;
@@ -29,7 +29,7 @@ export const OrderById = () => {
 
   return (
     <div className="order_box">
-      <p>{location.split("/").pop()} - stoll</p>
+      <p>{location.split("/")[2]} - stoll</p>
       {data?.innerData?.map((item) => {
         const product_data = JSON.parse(item?.product_data || "[]");
         return product_data?.map((item) => {
@@ -57,7 +57,7 @@ export const OrderById = () => {
         });
       })}
       <div className="order_footer">
-        <button onClick={() => navigate(`/payment/check`)}>
+        <button onClick={() => navigate(`/payment/check/${id}`)}>
           Check chiqarish
         </button>
         <button onClick={() => navigate(`/category${location}`)}>
