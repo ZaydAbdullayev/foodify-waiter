@@ -7,6 +7,7 @@ import io from "socket.io-client";
 import { GiHotMeal } from "react-icons/gi";
 import { BiSolidTimer } from "react-icons/bi";
 import { IoMdDoneAll } from "react-icons/io";
+import { LoadingBtn } from "../../components/loading/loading";
 
 // const socket = io("https://backup.foodify.uz");
 // const socket = io("http://localhost:80");
@@ -16,7 +17,7 @@ export const OrderById = () => {
   const location = useLocation().pathname;
   const id = location.split("/").pop();
   const navigate = useNavigate();
-  const { data = [] } = useGetOrderQuery(id);
+  const { data = [], isLoading } = useGetOrderQuery(id);
 
   const finish = () => {
     const uData = {
@@ -30,32 +31,38 @@ export const OrderById = () => {
   return (
     <div className="order_box">
       <p>{location.split("/")[2]} - stoll</p>
-      {data?.innerData?.map((item) => {
-        const product_data = JSON.parse(item?.product_data || "[]");
-        return product_data?.map((item) => {
-          return (
-            <div className="order_box__item" key={item.id}>
-              <p>{item.name}</p>
-              <p>{item?.quantity} ta</p>
-              <span>{item?.price} so'm</span>
-              <i className="item_status">
-                {item.status === 1 ? (
-                  <span>
-                    <BiSolidTimer
-                      style={{ fontSize: "var(--fs3)", marginTop: "20px" }}
-                    />
-                    <GiHotMeal />
-                  </span>
-                ) : (
-                  <span>
-                    <IoMdDoneAll />
-                  </span>
-                )}
-              </i>
-            </div>
-          );
-        });
-      })}
+      {isLoading ? (
+        <span className="loader_box">
+          <LoadingBtn />
+        </span>
+      ) : (
+        data?.innerData?.map((item) => {
+          const product_data = JSON.parse(item?.product_data || "[]");
+          return product_data?.map((item) => {
+            return (
+              <div className="order_box__item" key={item.id}>
+                <p>{item.name}</p>
+                <p>{item?.quantity} ta</p>
+                <span>{item?.price} so'm</span>
+                <i className="item_status">
+                  {item.status === 1 ? (
+                    <span>
+                      <BiSolidTimer
+                        style={{ fontSize: "var(--fs3)", marginTop: "20px" }}
+                      />
+                      <GiHotMeal />
+                    </span>
+                  ) : (
+                    <span>
+                      <IoMdDoneAll />
+                    </span>
+                  )}
+                </i>
+              </div>
+            );
+          });
+        })
+      )}
       <div className="order_footer">
         <button onClick={() => navigate(`/payment/check/${id}`)}>
           Check chiqarish

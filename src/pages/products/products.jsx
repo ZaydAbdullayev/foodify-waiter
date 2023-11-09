@@ -6,10 +6,12 @@ import { CalculateTotalPrice } from "../../service/calc.service";
 import { useGetProductQuery } from "../../service/order.service";
 import io from "socket.io-client";
 import { NumericFormat } from "react-number-format";
+import { LoadingBtn } from "../../components/loading/loading";
 
 import { LuShoppingBasket } from "react-icons/lu";
-import { BiCircle } from "react-icons/bi";
+import { BiCircle, BiCheck } from "react-icons/bi";
 import { FiCheckCircle } from "react-icons/fi";
+import { TbMessage2Plus } from "react-icons/tb";
 
 // const socket = io("https://backup.foodify.uz");
 // const socket = io("http://localhost:80");
@@ -21,8 +23,10 @@ export const Products = () => {
   const [update, setUpdate] = useState(false);
   const [open, setOpen] = useState(false);
   const [takeaway, setTakeaway] = useState(false);
+  const [desc, setDesc] = useState(false);
+  const [extra, setExtra] = useState("");
   const location = useLocation();
-  const { data = [] } = useGetProductQuery();
+  const { data = [], isLoading } = useGetProductQuery();
   const position = location.pathname.split("/");
   const uniqueCategories = [
     ...new Set(data?.innerData?.map((food) => food?.category)),
@@ -32,7 +36,7 @@ export const Products = () => {
     uniqueCategories[0];
   const cart = useMemo(() => {
     return JSON?.parse(localStorage?.getItem("cart")) || [];
-  }, [update]);
+  }, []);
   const total = CalculateTotalPrice(cart);
 
   const paymentData = {
@@ -43,10 +47,10 @@ export const Products = () => {
     price: total,
     payment: "token",
     table_name: position[3],
-    worker_name: user?.user?.name ,
-    worker_id:user?.user?.user_id,
+    worker_name: user?.user?.name,
+    worker_id: user?.user?.user_id,
     order_type: takeaway ? "Olib ketish" : "Restoran",
-    t_location: position[2]
+    t_location: position[2],
   };
 
   const handleTarget = (item) => {
@@ -93,6 +97,17 @@ export const Products = () => {
     navigate("/");
   };
 
+  const addExtr = (value) => {
+    setDesc(false);
+    const updatedCart = cart?.map((item) => {
+      if (item.id === value.id) {
+        item.comment = value.comment;
+      }
+      return item;
+    });
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   const filteredData = data?.innerData?.filter(
     (item) => item?.category?.split(" ")?.join("") === category
   );
@@ -116,20 +131,26 @@ export const Products = () => {
       </div>
       <div className="res_menu">
         <div className="res_menu_box">
-          {filteredData?.map((item) => {
-            const count = cart.filter((x) => x.id === item.id);
-            return (
-              <div
-                className="res_menu_item"
-                key={item?.id}
-                onClick={() => addToCart(item)}
-              >
-                <p style={{ textTransform: "capitalize" }}>{item?.name}</p>
-                <span>{item?.description}</span>
-                {count[0]?.quantity && <i>{count[0]?.quantity}</i>}
-              </div>
-            );
-          })}
+          {isLoading ? (
+            <span className="loader_box">
+              <LoadingBtn />
+            </span>
+          ) : (
+            filteredData?.map((item) => {
+              const count = cart.filter((x) => x.id === item.id);
+              return (
+                <div
+                  className="res_menu_item"
+                  key={item?.id}
+                  onClick={() => addToCart(item)}
+                >
+                  <p style={{ textTransform: "capitalize" }}>{item?.name}</p>
+                  <span>{item?.description}</span>
+                  {count[0]?.quantity && <i>{count[0]?.quantity}</i>}
+                </div>
+              );
+            })
+          )}
         </div>
       </div>
       <div className="book_order">
@@ -146,16 +167,27 @@ export const Products = () => {
           {cart?.map((item) => {
             return (
               <div className="cart_body__item" key={item?.id}>
-                <p>
-                  {item?.name}
-                  <b>{item?.description}</b>
-                  <NumericFormat
-                    value={item?.price * item?.quantity}
-                    thousandSeparator=" "
-                    displayType="text"
-                    suffix=" so'm"
+                {desc === item.id ? (
+                  <input
+                    type="text"
+                    name="comment"
+                    autoFocus
+                    autoComplete="off"
+                    className="description"
+                    onChange={(e) => setExtra(e.target.value)}
                   />
-                </p>
+                ) : (
+                  <p>
+                    {item?.name}
+                    <b>{item?.description}</b>
+                    <NumericFormat
+                      value={item?.price * item?.quantity}
+                      thousandSeparator=" "
+                      displayType="text"
+                      suffix=" so'm"
+                    />
+                  </p>
+                )}
                 <p>{item?.description}</p>
                 <NumericFormat
                   value={item?.price * item?.quantity}
@@ -164,6 +196,15 @@ export const Products = () => {
                   suffix=" so'm"
                 />
                 <div className="update_item">
+                  <button>
+                    {desc === item.id ? (
+                      <BiCheck
+                        onClick={() => addExtr({ id: item.id, comment: extra })}
+                      />
+                    ) : (
+                      <TbMessage2Plus onClick={() => setDesc(item.id)} />
+                    )}
+                  </button>
                   <button
                     onClick={() =>
                       updateCart({ id: item.id, quantity: item.quantity - 1 })

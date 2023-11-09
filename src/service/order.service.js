@@ -30,7 +30,19 @@ export const orderApi = createApi({
       }),
       providesTags: ["order"],
     }),
+
+    getwOrder: builder.query({
+      query: () => ({
+        url: `get/wOrders/${user?.user?.user_id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }),
+      providesTags: ["order"],
+    }),
   }),
 });
 
-export const { useGetProductQuery, useGetOrderQuery } = orderApi;
+export const { useGetProductQuery, useGetOrderQuery, useGetwOrderQuery } =
+  orderApi;

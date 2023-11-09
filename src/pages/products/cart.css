@@ -23,7 +23,7 @@
   top: 0;
 }
 
-.cart_box > p {
+.cart_box>p {
   inline-size: 100%;
   text-align: center;
   font-size: var(--fs3);
@@ -41,7 +41,7 @@
   flex: 1;
 }
 
-.cart_body > p {
+.cart_body>p {
   inline-size: 100%;
   padding: var(--ipd);
   display: flex;
@@ -60,26 +60,26 @@
   border-bottom: 1px solid #ccc7cc;
 }
 
-.cart_body__item > :first-child {
+.cart_body__item> :first-child {
   inline-size: 28%;
   display: flex;
   flex-direction: column;
   text-transform: capitalize;
 }
 
-.cart_body__item > :first-child :where(span, b) {
+.cart_body__item> :first-child :where(span, b) {
   display: none;
 }
 
-.cart_body__item > :nth-child(2) {
+.cart_body__item> :nth-child(2) {
   inline-size: 18%;
 }
 
-.cart_body > :last-child {
+.cart_body> :last-child {
   border: none;
 }
 
-.cart_body__item > span {
+.cart_body__item>span {
   flex: 1;
 }
 
@@ -98,16 +98,16 @@
   font-size: var(--fs4);
 }
 
-.update_item > button {
+.update_item>button {
   width: var(--wh1);
 }
 
-.update_item > input {
+.update_item>input {
   width: calc(var(--wh1) * 1.5);
   text-align: center;
 }
 
-.update_item > input::-webkit-inner-spin-button {
+.update_item>input::-webkit-inner-spin-button {
   display: none;
 }
 
@@ -131,16 +131,16 @@
   color: #fff;
 }
 
-.takeaway > svg {
+.takeaway>svg {
   font-size: var(--fs3);
 }
 
 @media (max-width: 730px) {
-  .cart_body__item > :first-child {
+  .cart_body__item> :first-child {
     inline-size: 24%;
   }
 
-  .cart_body__item > :nth-child(2) {
+    .cart_body__item> :nth-child(2) {
     inline-size: 16%;
   }
 }
@@ -150,11 +150,11 @@
     --wh1: 35px;
   }
 
-  .cart_body__item > :first-child {
+    .cart_body__item> :first-child {
     flex: 1;
   }
 
-  .cart_body__item > :first-child > b {
+    .cart_body__item> :first-child>b {
     text-transform: lowercase;
     font-weight: 400;
     display: flex;
@@ -162,11 +162,11 @@
     color: #ccc;
   }
 
-  .cart_body__item > :nth-child(2) {
+    .cart_body__item> :nth-child(2) {
     display: none;
   }
 
-  .cart_body__item > span {
+    .cart_body__item>span {
     flex: none;
   }
 }
@@ -182,11 +182,11 @@
 }
 
 @media (max-width: 450px) {
-  .cart_body__item > :first-child > span {
+  .cart_body__item> :first-child>span {
     display: flex;
   }
 
-  .cart_body__item > :nth-child(3) {
+    .cart_body__item> :nth-child(3) {
     display: none;
   }
 

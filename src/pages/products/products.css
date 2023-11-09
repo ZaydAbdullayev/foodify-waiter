@@ -124,6 +124,12 @@
   height: var(--iwh2);
 }
 
+.description {
+  width: calc(var(--wh1) * 4);
+  height: var(--wh1);
+  padding: 0 2%;
+  font-size: var(--fs5);
+}
 .book_order {
   position: fixed;
   bottom: 0;

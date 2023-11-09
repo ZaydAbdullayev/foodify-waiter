@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useGetLocationQuery } from "../../service/table.service";
 import { useAddTableMutation } from "../../service/table.service";
+import { LoadingBtn } from "../loading/loading";
 
 import { RiMenu3Fill } from "react-icons/ri";
 import { BiArrowBack, BiSolidFoodMenu } from "react-icons/bi";
@@ -16,6 +17,7 @@ export const Navbar = memo(() => {
   const { data: category = [] } = useGetLocationQuery();
   const [newType, setNewType] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [addTable] = useAddTableMutation();
   const stoll = location
     .split("/")
@@ -28,10 +30,17 @@ export const Navbar = memo(() => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const values = Object.fromEntries(formData.entries());
-    const { data } = await addTable(values);
-    if (data) {
-      e.target.reset();
-      setOpen(false);
+    try {
+      setLoading(true);
+      const { data } = await addTable(values);
+      if (data) {
+        e.target.reset();
+        setOpen(false);
+      }
+    } catch (err) {
+      alert("Xatolik yuz berdi!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -101,7 +110,9 @@ export const Navbar = memo(() => {
               placeholder="Xona yoki Stoll raqamini kiriting *"
             />
             <input type="hidden" name="res_id" value={user?.user?.id} />
-            <button>Qo'shish</button>
+            <button className="relative">
+              {loading ? <LoadingBtn /> : "Qo'shish"}
+            </button>
           </form>
           <i onClick={() => setOpen(false)}></i>
         </div>
