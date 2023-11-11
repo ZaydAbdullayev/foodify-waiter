@@ -7,6 +7,7 @@ import { useGetProductQuery } from "../../service/order.service";
 import io from "socket.io-client";
 import { NumericFormat } from "react-number-format";
 import { LoadingBtn } from "../../components/loading/loading";
+import { enqueueSnackbar as es } from "notistack";
 
 import { LuShoppingBasket } from "react-icons/lu";
 import { BiCircle, BiCheck } from "react-icons/bi";
@@ -95,6 +96,7 @@ export const Products = () => {
     socket.emit("/update/table", uData);
     localStorage.removeItem("cart");
     navigate("/");
+    es("Buyurtma yuborildi!", { variant: "warning" });
   };
 
   const addExtr = (value) => {

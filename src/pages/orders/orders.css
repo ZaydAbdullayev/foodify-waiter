@@ -92,6 +92,7 @@
   background: #222;
   color: #fff;
   border-top: 1px solid #ccc;
+  z-index: 999;
 }
 
 .order_footer > button {

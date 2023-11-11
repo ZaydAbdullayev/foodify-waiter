@@ -30,7 +30,6 @@ export const OrderById = () => {
 
   return (
     <div className="order_box">
-      <p>{location.split("/")[2]} - stoll</p>
       {isLoading ? (
         <span className="loader_box">
           <LoadingBtn />

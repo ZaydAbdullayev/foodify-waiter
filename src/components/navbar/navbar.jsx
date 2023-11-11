@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useGetLocationQuery } from "../../service/table.service";
 import { useAddTableMutation } from "../../service/table.service";
 import { LoadingBtn } from "../loading/loading";
+import { enqueueSnackbar as es } from "notistack";
 
 import { RiMenu3Fill } from "react-icons/ri";
 import { BiArrowBack, BiSolidFoodMenu } from "react-icons/bi";
@@ -36,6 +37,7 @@ export const Navbar = memo(() => {
       if (data) {
         e.target.reset();
         setOpen(false);
+        es("Buyurtma yuborildi!", { variant: "warning" });
       }
     } catch (err) {
       alert("Xatolik yuz berdi!");
