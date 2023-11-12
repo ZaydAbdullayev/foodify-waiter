@@ -96,7 +96,7 @@ export const Products = () => {
     socket.emit("/update/table", uData);
     localStorage.removeItem("cart");
     navigate("/");
-    es("Buyurtma yuborildi!", { variant: "warning" });
+    es("Buyurtma yuborildi!", { variant: "success" });
   };
 
   const addExtr = (value) => {
