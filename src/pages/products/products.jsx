@@ -14,9 +14,9 @@ import { BiCircle, BiCheck } from "react-icons/bi";
 import { FiCheckCircle } from "react-icons/fi";
 import { TbMessage2Plus } from "react-icons/tb";
 
-// const socket = io("https://backup.foodify.uz");
+const socket = io("https://backup.foodify.uz");
 // const socket = io("http://localhost:80");
-const socket = io("https://799twrl4-80.euw.devtunnels.ms");
+// const socket = io("https://799twrl4-80.euw.devtunnels.ms");
 
 export const Products = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;

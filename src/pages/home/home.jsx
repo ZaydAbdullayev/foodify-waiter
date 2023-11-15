@@ -4,7 +4,9 @@ import { Table } from "../../components/tables/table";
 import { useGetLocationQuery } from "../../service/table.service";
 import io from "socket.io-client";
 
-const socket = io("https://799twrl4-80.euw.devtunnels.ms");
+const socket = io("https://backup.foodify.uz");
+// const socket = io("http://localhost:80");
+// const socket = io("https://799twrl4-80.euw.devtunnels.ms");
 
 export const Home = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
