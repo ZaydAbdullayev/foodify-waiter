@@ -11,7 +11,7 @@ import { LoadingBtn } from "../../components/loading/loading";
 
 // const socket = io("https://backup.foodify.uz");
 // const socket = io("http://localhost:80");
-const socket = io("https://799twrl4-80.euw.devtunnels.ms");
+const socket = io("https://vsxmzbb6-80.euw.devtunnels.ms");
 
 export const OrderById = () => {
   const location = useLocation().pathname;
