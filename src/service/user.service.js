@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const base_url = "https://backend.foodify.uz";
-// const base_url = "https://799twrl4-8081.euw.devtunnels.ms";
-
+// const base_url = "https://backend.foodify.uz";
+const base_url = "https://799twrl4-8081.euw.devtunnels.ms";
+const user = JSON.parse(localStorage.getItem("user")) || {};
 
 export const waiterApi = createApi({
   reducerPath: "waiterApi",
@@ -33,7 +33,7 @@ export const waiterApi = createApi({
     //path for logout waiter
     checkDep: builder.mutation({
       query: (pin) => ({
-        url: `/check/worker/${pin}`,
+        url: `/check/worker/${user?.user?.id}/${pin}`,
         method: "POST",
         headers: {
           "Content-Type": "application/json",
