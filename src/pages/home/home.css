@@ -13,7 +13,7 @@
 }
 
 .home_filter__item {
-  width: calc(100% / 6 - var(--gap3) * 5 / 6);
+  width: calc(100% / 3 - var(--gap3) * 2 / 3);
   height: 45px;
   display: flex;
   align-items: center;

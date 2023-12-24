@@ -6,6 +6,7 @@ import { useGetLocationQuery } from "../../service/table.service";
 import { useAddTableMutation } from "../../service/table.service";
 import { LoadingBtn } from "../loading/loading";
 import { enqueueSnackbar as es } from "notistack";
+import { PatternFormat } from "react-number-format";
 
 import { RiMenu3Fill } from "react-icons/ri";
 import { BiArrowBack, BiSolidFoodMenu } from "react-icons/bi";
@@ -19,6 +20,7 @@ export const Navbar = memo(() => {
   const [newType, setNewType] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [type, setType] = useState("4");
   const [addTable] = useAddTableMutation();
   const stoll = location
     .split("/")
@@ -35,9 +37,9 @@ export const Navbar = memo(() => {
       setLoading(true);
       const { data } = await addTable(values);
       if (data) {
-        e.target.reset();
         setOpen(false);
-        es("Buyurtma yuborildi!", { variant: "warning" });
+        es("Joylashuv qo'shildi!", { variant: "success" });
+        e.target.reset();
       }
     } catch (err) {
       alert("Xatolik yuz berdi!");
@@ -87,7 +89,7 @@ export const Navbar = memo(() => {
               name="location"
               onChange={(e) => setNewType(e.target.value)}
             >
-              <option value="">Bo'lim tanlang</option>
+              <option value="">Joylashuv tanlang</option>
               {category?.data?.map((item) => (
                 <option key={item} value={item}>
                   {item}
@@ -109,7 +111,37 @@ export const Navbar = memo(() => {
               name="name"
               required
               autoComplete="off"
-              placeholder="Xona yoki Stoll raqamini kiriting *"
+              placeholder={`Xona/Stoll raqamini kiriting *`}
+            />
+            <select name="people" onChange={(e) => setType(e.target.value)}>
+              <option value="4">Xona/Stoll sig'imi</option>
+              <option value="4">4 kishilik</option>
+              <option value="6">6ta kishilik</option>
+              <option value="8">8ta kishilik</option>
+              <option value="10">10ta kishilik</option>
+              <option value="manual">Qo'lda kiritish</option>
+            </select>
+            {type === "manual" && (
+              <input
+                type="number"
+                name="people"
+                required
+                autoComplete="off"
+                placeholder="Xona/Stoll sig'imi *"
+              />
+            )}
+            <PatternFormat
+              name="percentage"
+              placeholder="Stoll uchun foizni kiritish"
+              format="##%"
+              mask="_"
+              autoComplete="off"
+            />
+            <input
+              type="text"
+              name="minutelyCost"
+              autoComplete="off"
+              placeholder="Minutlik narx *"
             />
             <input type="hidden" name="res_id" value={user?.user?.id} />
             <button className="relative">

@@ -14,6 +14,7 @@ export const tableApi = createApi({
         method: "POST",
         headers: {},
       }),
+      providesTags: ["table"],
     }),
 
     getLocation: builder.query({

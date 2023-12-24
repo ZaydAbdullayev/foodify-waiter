@@ -29,7 +29,7 @@ export const Home = () => {
 
   useEffect(() => {
     filterData(category?.data?.[0]);
-  }, []);
+  }, [category?.data]);
 
   return (
     <div className="box" style={{ background: "#333" }}>
