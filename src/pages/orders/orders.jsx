@@ -2,16 +2,12 @@ import React from "react";
 import "./orders.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useGetOrderQuery } from "../../service/order.service";
-import io from "socket.io-client";
+import socket from "../../socket.config";
 
 import { GiHotMeal } from "react-icons/gi";
 import { BiSolidTimer } from "react-icons/bi";
 import { IoMdDoneAll } from "react-icons/io";
 import { LoadingBtn } from "../../components/loading/loading";
-
-// const socket = io("https://backup.foodify.uz");
-// const socket = io("http://localhost:80");
-const socket = io("https://vsxmzbb6-80.euw.devtunnels.ms");
 
 export const OrderById = () => {
   const location = useLocation().pathname;

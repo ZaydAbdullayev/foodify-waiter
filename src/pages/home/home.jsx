@@ -2,11 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./home.css";
 import { Table } from "../../components/tables/table";
 import { useGetLocationQuery } from "../../service/table.service";
-import io from "socket.io-client";
-
-// const socket = io("https://backup.foodify.uz");
-// const socket = io("http://localhost:80");
-const socket = io("https://vsxmzbb6-80.euw.devtunnels.ms");
+import socket from "../../socket.config";
 
 export const Home = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;

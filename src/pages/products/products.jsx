@@ -4,19 +4,15 @@ import "./cart.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CalculateTotalPrice } from "../../service/calc.service";
 import { useGetProductQuery } from "../../service/order.service";
-import io from "socket.io-client";
 import { NumericFormat } from "react-number-format";
 import { LoadingBtn } from "../../components/loading/loading";
 import { enqueueSnackbar as es } from "notistack";
+import socket from "../../socket.config";
 
 import { LuShoppingBasket } from "react-icons/lu";
 import { BiCircle, BiCheck } from "react-icons/bi";
 import { FiCheckCircle } from "react-icons/fi";
 import { TbMessage2Plus } from "react-icons/tb";
-
-// const socket = io("https://backup.foodify.uz");
-// const socket = io("http://localhost:80");
-const socket = io("https://vsxmzbb6-80.euw.devtunnels.ms");
 
 export const Products = () => {
   const user = JSON.parse(localStorage.getItem("user")) || null;

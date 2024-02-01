@@ -1,12 +1,7 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-// const base_url = "https://backend.foodify.uz";
-const base_url = "https://vsxmzbb6-8081.euw.devtunnels.ms";
+import { apiSlice } from "./frame.service";
 const user = JSON.parse(localStorage.getItem("user")) || [];
 
-export const waiterApi = createApi({
-  reducerPath: "waiterApi",
-  baseQuery: fetchBaseQuery({ baseUrl: base_url }),
-  tagTypes: ["waiter"],
+export const waiterApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getWaiter: builder.query({
       query: () => ({
